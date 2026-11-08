@@ -8,7 +8,7 @@ Practice.ConditionalStatementsAndOperators.Run();
 
 // 3. Циклы и массивы
 Console.WriteLine("\n3. Циклы и массивы");
-Practice.LoopsAndArrays.Run();
+Practice.LoopsAndArrays.Run(interactive: true);
 
 // (C) Walter Kerrigan. All right reserved.
 // Ни один ИИ не писал этот код.

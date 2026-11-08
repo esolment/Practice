@@ -3,16 +3,24 @@ namespace Practice;
 internal static class LoopsAndArrays
 {
     private static readonly int[] MixedArray = [8, -5, 0, 9, 3, -5, 4];
-    private static readonly int TargetElement = MixedArray[Random.Shared.Next(MixedArray.Length)];
-    
-    public static void Run()
+
+    // interactive = true: данные вводит пользователь
+    // interactive = false: данные выбираются случайно
+    public static void Run(bool interactive)
     {
+        int[] mixedArray = [..MixedArray];
+
         // 1
         int num = 1;
-        while (num < 11)
+        while (num <= 20)
         {
             Console.WriteLine(num);
             num++;
+        }
+
+        for (int i = 1; i <= 20; i++)
+        {
+            Console.WriteLine(i);
         }
 
         // 2
@@ -31,42 +39,50 @@ internal static class LoopsAndArrays
         }
 
         // 4
-        int n = Random.Shared.Next(1, 101);
-        int sum = 0;
-        for (int i = 1; i <= n; i++)
+        int n = GetInt(interactive, "Введите N для суммы 1..N: ", 1, 100);
+        if (n < 1)
         {
-            sum += i;
+            Console.WriteLine("N должно быть не меньше 1.");
+        }
+        else
+        {
+            long sum = 0;
+            int counter = 1;
+            while (counter <= n)
+            {
+                sum += counter;
+                counter++;
+            }
+            Console.WriteLine($"Сумма чисел 1..{n}: {sum}");
         }
 
-        Console.WriteLine($"Сумма чисел 1..{n}: {sum}");
-
         // 5
-        int multiplicationTable = Random.Shared.Next(10);
+        int multiplicationTable = GetInt(interactive, "Введите число для таблицы умножения: ", 0, 9);
         for (int i = 1; i <= 10; i++)
         {
             Console.WriteLine($"{multiplicationTable} * {i} = {multiplicationTable * i}");
         }
 
         // 6
-        int positiveNumber = Random.Shared.Next(101);
+        int positiveNumber = GetInt(interactive, "Введите положительное число для подсчёта цифр: ", 1, 1_000_000, 1);
         int count = 0;
         while (positiveNumber > 0)
         {
             positiveNumber /= 10;
             count++;
         }
-        Console.WriteLine(count);
+        Console.WriteLine($"Количество цифр: {count}");
 
         // 7
-        int[] positiveArray = [1, 2, 3, 4, 5, 6, 7, 8 ];
+        int[] positiveArray = [1, 2, 3, 4, 5, 6, 7, 8];
         Console.WriteLine($"Длина массива: {positiveArray.Length}");
-        foreach (var (index, item) in positiveArray.Index())
+        for (int i = 0; i < positiveArray.Length; i++)
         {
-            Console.WriteLine($"{index}: {item}");
+            Console.WriteLine($"{i}: {positiveArray[i]}");
         }
 
         // 8
-        int[] scores = [5, 5, 2, 5, 5];
+        int[] scores = [5, 4, 2, 5, 3];
         scores[2] = 5;
         foreach (int item in scores)
         {
@@ -74,32 +90,39 @@ internal static class LoopsAndArrays
         }
 
         // 9
-        Console.WriteLine(MixedArray.Sum());
-        Console.WriteLine(MixedArray.Average());
+        int arraySum = 0;
+        foreach (int item in mixedArray)
+        {
+            arraySum += item;
+        }
+        Console.WriteLine($"Сумма: {arraySum}");
+        Console.WriteLine($"Среднее: {(double)arraySum / mixedArray.Length}");
 
         // 10
-        if (MixedArray.Length == 0)
+        int arrayMin = 0;
+        int arrayMax = 0;
+        if (mixedArray.Length == 0)
         {
             Console.WriteLine("Массив пуст.");
         }
         else
         {
-            int min = MixedArray[0];
-            int max = MixedArray[0];
-            for (int i = 1; i < MixedArray.Length; i++)
+            arrayMin = mixedArray[0];
+            arrayMax = mixedArray[0];
+            for (int i = 1; i < mixedArray.Length; i++)
             {
-                min = Math.Min(min, MixedArray[i]);
-                max = Math.Max(max, MixedArray[i]);
+                if (mixedArray[i] < arrayMin) arrayMin = mixedArray[i];
+                if (mixedArray[i] > arrayMax) arrayMax = mixedArray[i];
             }
-            Console.WriteLine($"Min: {min}");
-            Console.WriteLine($"Max: {max}");
+            Console.WriteLine($"Min: {arrayMin}");
+            Console.WriteLine($"Max: {arrayMax}");
         }
 
         // 11
         int positiveCount = 0;
         int negativeCount = 0;
         int zeroCount = 0;
-        foreach (int i in MixedArray)
+        foreach (int i in mixedArray)
         {
             if (i == 0)
             {
@@ -118,72 +141,109 @@ internal static class LoopsAndArrays
         Console.WriteLine($"Положительных: {positiveCount}");
         Console.WriteLine($"Отрицательных: {negativeCount}");
         Console.WriteLine($"Нулей: {zeroCount}");
-        
+
         // 12
-        foreach (var (index, item) in MixedArray.Index())
+        Console.WriteLine($"Массив: {string.Join(", ", mixedArray)}");
+        int targetElement;
+        if (interactive)
         {
-            if (item != TargetElement) continue;
-            Console.WriteLine($"Индекс первого элемента равному {TargetElement}: {index}");
-            break;
-        }
-        
-        // 13
-        foreach (var (index, item) in MixedArray.AsEnumerable().Index().Reverse())
-        {
-            if (item != TargetElement) continue;
-            Console.WriteLine($"Индекс последнего элемента равному {TargetElement}: {index}");
-        }
-        
-        // 14
-        Console.WriteLine(string.Join(", ", MixedArray.Reverse().ToArray()));
-        // TODO: Обменять элементы
-        
-        // 15
-        int last = MixedArray[0];
-        bool sorted = true;
-        foreach (var i in MixedArray)
-        {
-            if (i < last)
-            {
-                Console.WriteLine("Массив не отсортирован.");
-                sorted = false;
-                break;
-            }
-        }
-        if (sorted)
-        {
-            Console.WriteLine("Массив отсортирован.");
-        }
-        
-        // 16
-        if (MixedArray.Length < 2)
-        {
-            Console.WriteLine("Второе различное максимальное значение отсутствует.");
+            targetElement = ReadInt("Введите число для поиска в массиве: ");
         }
         else
         {
-            List<int> mixedList = [..MixedArray];
-            int lastMaxValue = mixedList.Max();
-            while (true)
+            targetElement = mixedArray[Random.Shared.Next(mixedArray.Length)];
+            Console.WriteLine($"Число для поиска в массиве: {targetElement} (случайно)");
+        }
+
+        int firstIndex = -1;
+        for (int i = 0; i < mixedArray.Length; i++)
+        {
+            if (mixedArray[i] == targetElement)
             {
-                mixedList.Remove(lastMaxValue);
-                int? maxValue = mixedList.Cast<int?>().Max();
-                if (maxValue == null)
-                {
-                    Console.WriteLine("Второе различное максимальное значение отсутствует.");
-                    break;
-                }
-                if (maxValue != lastMaxValue)
-                {
-                    Console.WriteLine($"Второе различное максимальное значение: {maxValue}");
-                    break;
-                }
+                firstIndex = i;
+                break;
             }
         }
-        
+        Console.WriteLine($"Индекс первого элемента, равного {targetElement}: {firstIndex}");
+
+        // 13
+        int lastIndex = -1;
+        for (int i = mixedArray.Length - 1; i >= 0; i--)
+        {
+            if (mixedArray[i] == targetElement)
+            {
+                lastIndex = i;
+                break;
+            }
+        }
+        Console.WriteLine($"Индекс последнего элемента, равного {targetElement}: {lastIndex}");
+
+        // 14
+        Console.Write("В обратном порядке: ");
+        for (int i = mixedArray.Length - 1; i >= 0; i--)
+        {
+            Console.Write(i == 0 ? $"{mixedArray[i]}" : $"{mixedArray[i]}, ");
+        }
+        Console.WriteLine();
+
+        int[] reversedArray = [..mixedArray];
+        for (int i = 0; i < reversedArray.Length / 2; i++)
+        {
+            int opposite = reversedArray.Length - 1 - i;
+            (reversedArray[i], reversedArray[opposite]) = (reversedArray[opposite], reversedArray[i]);
+        }
+        Console.WriteLine($"Обмен элементов внутри массива: {string.Join(", ", reversedArray)}");
+
+        // 15
+        int last = mixedArray[0];
+        bool sorted = true;
+        foreach (int i in mixedArray)
+        {
+            if (i < last)
+            {
+                sorted = false;
+                break;
+            }
+            last = i;
+        }
+        Console.WriteLine(sorted ? "Массив отсортирован." : "Массив не отсортирован.");
+
+        // 16
+        bool hasFirst = false;
+        bool hasSecond = false;
+        int firstMax = 0;
+        int secondMax = 0;
+        foreach (int i in mixedArray)
+        {
+            if (!hasFirst || i > firstMax)
+            {
+                if (hasFirst)
+                {
+                    secondMax = firstMax;
+                    hasSecond = true;
+                }
+                firstMax = i;
+                hasFirst = true;
+            }
+            else if (i < firstMax && (!hasSecond || i > secondMax))
+            {
+                secondMax = i;
+                hasSecond = true;
+            }
+        }
+
+        if (hasSecond)
+        {
+            Console.WriteLine($"Второе различное максимальное значение: {secondMax}");
+        }
+        else
+        {
+            Console.WriteLine("Второе различное максимальное значение отсутствует.");
+        }
+
         // 17
-        int r = Random.Shared.Next(3, 9);
-        int c = Random.Shared.Next(3, 9);
+        int r = GetInt(interactive, "Введите число строк R: ", 3, 8, 1, 100);
+        int c = GetInt(interactive, "Введите число столбцов C: ", 3, 8, 1, 100);
         for (int row = 0; row < r; row++)
         {
             for (int col = 0; col < c; col++)
@@ -192,13 +252,13 @@ internal static class LoopsAndArrays
             }
             Console.WriteLine();
         }
-        
+
         // 18
+        int triangleSide = GetInt(interactive, "Введите N для треугольника: ", 4, 30, 1, 100);
         // вложенные массивы к сожалению не понадобились
-        int triangleSide = Random.Shared.Next(4, 31);
         string spaces = "";
         string matter = "#";
-        
+
         for (int i = 0; i < triangleSide / 2; i++)
         {
             spaces += " ";
@@ -217,59 +277,63 @@ internal static class LoopsAndArrays
                 break;
             }
         }
-        
+
         // 19
-        Console.WriteLine($"Исходный массив: {String.Join(", ", positiveArray)}");
+        Console.WriteLine($"Исходный массив: {string.Join(", ", positiveArray)}");
         int lastItem = positiveArray[^1];
-        int zeroItem;
-        for (int i = 0; i < positiveArray.Length; i++)
+        for (int i = positiveArray.Length - 1; i > 0; i--)
         {
-            zeroItem = positiveArray[i];
-            positiveArray[i] = lastItem;
-            if (i != positiveArray.Length - 1)
-            { 
-                lastItem = zeroItem;
-            }
+            positiveArray[i] = positiveArray[i - 1];
         }
-        Console.WriteLine($"Сдвинутый массив: {String.Join(", ", positiveArray)}");
-        
+        positiveArray[0] = lastItem;
+        Console.WriteLine($"Сдвинутый массив: {string.Join(", ", positiveArray)}");
+
         // 20
-        List<int> uniqueList = [];
-        foreach (int i in MixedArray)
+        Console.WriteLine($"Исходный массив: {string.Join(", ", mixedArray)}");
+        Console.Write("Без повторов: ");
+        for (int i = 0; i < mixedArray.Length; i++)
         {
-            if (!uniqueList.Contains(i))
+            bool seen = false;
+            for (int j = 0; j < i; j++)
             {
-                uniqueList.Add(i);
-            }
-        }
-        Console.WriteLine($"Исходный массив: {String.Join(", ", MixedArray)}");
-        Console.WriteLine($"Без повторов: {String.Join(", ", uniqueList)}");
-        
-        // 21
-        int range1 = Random.Shared.Next(MixedArray.Min(), MixedArray.Max() + 1);
-        int range2 = Random.Shared.Next(MixedArray.Min(), MixedArray.Max() + 1);
-        int k = range1 + range2;
-        bool found = false;
-        
-        Console.WriteLine($"Массив для поиска: {String.Join(", ", MixedArray)}");
-        Console.WriteLine($"Искомая сумма пар: {k}");
-        
-        for (int i = 0; i < MixedArray.Length; i++)
-        {
-            int lookingPair = MixedArray[i];
-            for (int j = i + 1; j < MixedArray.Length; j++)
-            {
-                if (MixedArray[j] + lookingPair == k)
+                if (mixedArray[j] == mixedArray[i])
                 {
-                    Console.WriteLine($"Индексы пары: {i}, {j}"); 
-                    Console.WriteLine($"Значения: {lookingPair}, {MixedArray[j]}");
-                    found = true;
+                    seen = true;
                     break;
                 }
             }
-            if (found)
+            if (!seen)
             {
-                break;
+                Console.Write($"{mixedArray[i]} ");
+            }
+        }
+        Console.WriteLine();
+
+        // 21
+        Console.WriteLine($"Массив для поиска: {string.Join(", ", mixedArray)}");
+        int k;
+        if (interactive)
+        {
+            k = ReadInt("Введите искомую сумму пары K: ");
+        }
+        else
+        {
+            k = Random.Shared.Next(arrayMin, arrayMax + 1) + Random.Shared.Next(arrayMin, arrayMax + 1);
+            Console.WriteLine($"Искомая сумма пары K: {k} (случайно)");
+        }
+
+        bool found = false;
+        for (int i = 0; i < mixedArray.Length && !found; i++)
+        {
+            for (int j = i + 1; j < mixedArray.Length; j++)
+            {
+                if (mixedArray[i] + mixedArray[j] == k)
+                {
+                    Console.WriteLine($"Индексы пары: {i}, {j}");
+                    Console.WriteLine($"Значения: {mixedArray[i]}, {mixedArray[j]}");
+                    found = true;
+                    break;
+                }
             }
         }
 
@@ -277,21 +341,23 @@ internal static class LoopsAndArrays
         {
             Console.WriteLine("Нет пары.");
         }
-        
+
         // 22
         int[,] matrix = new int[3, 4];
-        
+
         // Заполнение числами
         for (int i = 0; i < matrix.GetLength(0); i++)
         {
             for (int j = 0; j < matrix.GetLength(1); j++)
             {
                 matrix[i, j] = Random.Shared.Next(0, 11);
+                Console.Write($"{matrix[i, j],3}");
             }
+            Console.WriteLine();
         }
-        
-        // Вычисление суммы по каждой строке
-        List<int> rowsSum = [];
+
+        // Вычисление и вывод суммы по каждой строке
+        Console.WriteLine("Сумма каждой строки матрицы:");
         for (int i = 0; i < matrix.GetLength(0); i++)
         {
             int rowSum = 0;
@@ -299,36 +365,35 @@ internal static class LoopsAndArrays
             {
                 rowSum += matrix[i, j];
             }
-            rowsSum.Add(rowSum);
+            Console.WriteLine($"Строка {i}: {rowSum}");
         }
-        
-        // Вывод сумм
-        Console.WriteLine("Сумма каждой строки матрицы:");
-        foreach (var (index, item) in rowsSum.Index())
-        {
-            Console.WriteLine($"Строка {index}: {item}");
-        }
-        
+
         // 23
-        int[] sortedArray = MixedArray.ToArray(); 
+        int[] sortedArray = [..mixedArray];
+        Console.WriteLine($"Исходный массив: {string.Join(", ", mixedArray)}");
 
         for (int i = 0; i < sortedArray.Length - 1; i++)
         {
+            bool swapped = false;
             for (int j = 0; j < sortedArray.Length - 1 - i; j++)
             {
                 if (sortedArray[j] > sortedArray[j + 1])
                 {
                     (sortedArray[j], sortedArray[j + 1]) = (sortedArray[j + 1], sortedArray[j]);
+                    swapped = true;
                 }
             }
+            Console.WriteLine($"После прохода {i + 1}: {string.Join(", ", sortedArray)}");
+
+            // Досрочный выход
+            if (!swapped) break;
         }
 
-        Console.WriteLine($"Исходный массив: {string.Join(", ", MixedArray)}");
         Console.WriteLine($"Сортированный массив: {string.Join(", ", sortedArray)}");
-        
+
         // 24
         Console.WriteLine("\nСклад экспедиции.");
-        
+
         int[] warehouses = new int[10];
 
         for (int i = 0; i < warehouses.Length; i++)
@@ -347,7 +412,7 @@ internal static class LoopsAndArrays
         // Сумма, минимум, максимум, пустые
         int totalSum = 0;
         int emptyCount = 0;
-        
+
         int minStock = warehouses[0];
         int maxStock = warehouses[0];
 
@@ -376,7 +441,7 @@ internal static class LoopsAndArrays
                 maxStock = current;
             }
         }
-        
+
         Console.WriteLine($"Общая сумма ресурсов: {totalSum}");
         Console.WriteLine($"Минимальный запас: {minStock}");
         Console.WriteLine($"Максимальный запас: {maxStock}");
@@ -384,46 +449,88 @@ internal static class LoopsAndArrays
         Console.WriteLine(new string('-', 35));
 
         // Поиск склада по количеству ресурса
-        Console.WriteLine("Введите количество ресурсов для поиска (или 'exit' для выхода):");
-
-        while (true)
+        if (interactive)
         {
-            Console.Write("\nВаш запрос: ");
-            string? input = Console.ReadLine();
+            Console.WriteLine("Введите количество ресурсов для поиска (или 'exit' для выхода):");
 
-            if (input == null) continue;
-            if (input.ToLower() == "exit")
+            while (true)
             {
-                Console.WriteLine("Программа завершена.");
-                break;
-            }
-            
-            if (int.TryParse(input, out int searchTarget))
-            {
-                int foundIndex = -1;
-                
-                for (int i = 0; i < warehouses.Length; i++)
+                Console.Write("\nВаш запрос: ");
+                string? input = Console.ReadLine();
+
+                if (input == null || input.ToLower() == "exit")
                 {
-                    if (warehouses[i] == searchTarget)
-                    {
-                        foundIndex = i;
-                        break;
-                    }
+                    Console.WriteLine("Программа завершена.");
+                    break;
                 }
-                
-                if (foundIndex != -1)
+
+                if (int.TryParse(input, out int searchTarget))
                 {
-                    Console.WriteLine($"[SUCCESS] Первый склад с таким количеством — это Склад #{foundIndex}");
+                    SearchWarehouse(warehouses, searchTarget);
                 }
                 else
                 {
-                    Console.WriteLine("[ERROR] Склада с таким точным количеством ресурсов не найдено.");
+                    Console.WriteLine("[ERROR] Введите корректное число или 'exit' для выхода.");
                 }
             }
-            else
+        }
+        else
+        {
+            int randomTarget = Random.Shared.Next(0, 11);
+            Console.WriteLine($"Случайный запрос: {randomTarget}");
+            SearchWarehouse(warehouses, randomTarget);
+        }
+    }
+
+    // Поиск первого склада с нужным количеством ресурса
+    private static void SearchWarehouse(int[] warehouses, int searchTarget)
+    {
+        int foundIndex = -1;
+
+        for (int i = 0; i < warehouses.Length; i++)
+        {
+            if (warehouses[i] == searchTarget)
             {
-                Console.WriteLine("[ERROR] Введите корректное число или 'exit' для выхода.");
+                foundIndex = i;
+                break;
             }
+        }
+
+        if (foundIndex != -1)
+        {
+            Console.WriteLine($"[SUCCESS] Первый склад с таким количеством - это Склад #{foundIndex}");
+        }
+        else
+        {
+            Console.WriteLine("[ERROR] Склада с таким точным количеством ресурсов не найдено.");
+        }
+    }
+
+    // Ввод пользователя или случайное значение, в зависимости от режима
+    private static int GetInt(bool interactive, string prompt, int randomMin, int randomMax,
+        int min = int.MinValue, int max = int.MaxValue)
+    {
+        if (interactive)
+        {
+            return ReadInt(prompt, min, max);
+        }
+
+        int value = Random.Shared.Next(randomMin, randomMax + 1);
+        Console.WriteLine($"{prompt}{value} (случайно)");
+        return value;
+    }
+
+    // Чтение целого числа с повтором при ошибке
+    private static int ReadInt(string prompt, int min = int.MinValue, int max = int.MaxValue)
+    {
+        while (true)
+        {
+            Console.Write(prompt);
+            if (int.TryParse(Console.ReadLine(), out int value) && value >= min && value <= max)
+            {
+                return value;
+            }
+            Console.WriteLine("[ERROR] Введите корректное целое число.");
         }
     }
 }
