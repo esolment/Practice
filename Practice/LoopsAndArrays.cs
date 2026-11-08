@@ -139,9 +139,9 @@ internal static class LoopsAndArrays
         // TODO: Обменять элементы
         
         // 15
-        int last = positiveArray[0];
+        int last = MixedArray[0];
         bool sorted = true;
-        foreach (var i in positiveArray)
+        foreach (var i in MixedArray)
         {
             if (i < last)
             {
@@ -182,6 +182,248 @@ internal static class LoopsAndArrays
         }
         
         // 17
+        int r = Random.Shared.Next(3, 9);
+        int c = Random.Shared.Next(3, 9);
+        for (int row = 0; row < r; row++)
+        {
+            for (int col = 0; col < c; col++)
+            {
+                Console.Write("#  ");
+            }
+            Console.WriteLine();
+        }
         
+        // 18
+        // вложенные массивы к сожалению не понадобились
+        int triangleSide = Random.Shared.Next(4, 31);
+        string spaces = "";
+        string matter = "#";
+        
+        for (int i = 0; i < triangleSide / 2; i++)
+        {
+            spaces += " ";
+        }
+
+        while (true)
+        {
+            Console.WriteLine($"{spaces}{matter}");
+            if (spaces.Length > 0)
+            {
+                spaces = spaces.Remove(0, 1);
+                matter += "##";
+            }
+            else
+            {
+                break;
+            }
+        }
+        
+        // 19
+        Console.WriteLine($"Исходный массив: {String.Join(", ", positiveArray)}");
+        int lastItem = positiveArray[^1];
+        int zeroItem;
+        for (int i = 0; i < positiveArray.Length; i++)
+        {
+            zeroItem = positiveArray[i];
+            positiveArray[i] = lastItem;
+            if (i != positiveArray.Length - 1)
+            { 
+                lastItem = zeroItem;
+            }
+        }
+        Console.WriteLine($"Сдвинутый массив: {String.Join(", ", positiveArray)}");
+        
+        // 20
+        List<int> uniqueList = [];
+        foreach (int i in MixedArray)
+        {
+            if (!uniqueList.Contains(i))
+            {
+                uniqueList.Add(i);
+            }
+        }
+        Console.WriteLine($"Исходный массив: {String.Join(", ", MixedArray)}");
+        Console.WriteLine($"Без повторов: {String.Join(", ", uniqueList)}");
+        
+        // 21
+        int range1 = Random.Shared.Next(MixedArray.Min(), MixedArray.Max() + 1);
+        int range2 = Random.Shared.Next(MixedArray.Min(), MixedArray.Max() + 1);
+        int k = range1 + range2;
+        bool found = false;
+        
+        Console.WriteLine($"Массив для поиска: {String.Join(", ", MixedArray)}");
+        Console.WriteLine($"Искомая сумма пар: {k}");
+        
+        for (int i = 0; i < MixedArray.Length; i++)
+        {
+            int lookingPair = MixedArray[i];
+            for (int j = i + 1; j < MixedArray.Length; j++)
+            {
+                if (MixedArray[j] + lookingPair == k)
+                {
+                    Console.WriteLine($"Индексы пары: {i}, {j}"); 
+                    Console.WriteLine($"Значения: {lookingPair}, {MixedArray[j]}");
+                    found = true;
+                    break;
+                }
+            }
+            if (found)
+            {
+                break;
+            }
+        }
+
+        if (!found)
+        {
+            Console.WriteLine("Нет пары.");
+        }
+        
+        // 22
+        int[,] matrix = new int[3, 4];
+        
+        // Заполнение числами
+        for (int i = 0; i < matrix.GetLength(0); i++)
+        {
+            for (int j = 0; j < matrix.GetLength(1); j++)
+            {
+                matrix[i, j] = Random.Shared.Next(0, 11);
+            }
+        }
+        
+        // Вычисление суммы по каждой строке
+        List<int> rowsSum = [];
+        for (int i = 0; i < matrix.GetLength(0); i++)
+        {
+            int rowSum = 0;
+            for (int j = 0; j < matrix.GetLength(1); j++)
+            {
+                rowSum += matrix[i, j];
+            }
+            rowsSum.Add(rowSum);
+        }
+        
+        // Вывод сумм
+        Console.WriteLine("Сумма каждой строки матрицы:");
+        foreach (var (index, item) in rowsSum.Index())
+        {
+            Console.WriteLine($"Строка {index}: {item}");
+        }
+        
+        // 23
+        int[] sortedArray = MixedArray.ToArray(); 
+
+        for (int i = 0; i < sortedArray.Length - 1; i++)
+        {
+            for (int j = 0; j < sortedArray.Length - 1 - i; j++)
+            {
+                if (sortedArray[j] > sortedArray[j + 1])
+                {
+                    (sortedArray[j], sortedArray[j + 1]) = (sortedArray[j + 1], sortedArray[j]);
+                }
+            }
+        }
+
+        Console.WriteLine($"Исходный массив: {string.Join(", ", MixedArray)}");
+        Console.WriteLine($"Сортированный массив: {string.Join(", ", sortedArray)}");
+        
+        // 24
+        Console.WriteLine("\nСклад экспедиции.");
+        
+        int[] warehouses = new int[10];
+
+        for (int i = 0; i < warehouses.Length; i++)
+        {
+            warehouses[i] = Random.Shared.Next(0, 11);
+        }
+
+        // Вывод содержимого
+        Console.WriteLine("Содержимое складов:");
+        for (int i = 0; i < warehouses.Length; i++)
+        {
+            Console.WriteLine($"Склад #{i}: {warehouses[i]} ед. ресурса");
+        }
+        Console.WriteLine(new string('-', 35));
+
+        // Сумма, минимум, максимум, пустые
+        int totalSum = 0;
+        int emptyCount = 0;
+        
+        int minStock = warehouses[0];
+        int maxStock = warehouses[0];
+
+        for (int i = 0; i < warehouses.Length; i++)
+        {
+            int current = warehouses[i];
+
+            // Сумма
+            totalSum += current;
+
+            // Пустые
+            if (current == 0)
+            {
+                emptyCount++;
+            }
+
+            // Минимум
+            if (current < minStock)
+            {
+                minStock = current;
+            }
+
+            // Максимум
+            if (current > maxStock)
+            {
+                maxStock = current;
+            }
+        }
+        
+        Console.WriteLine($"Общая сумма ресурсов: {totalSum}");
+        Console.WriteLine($"Минимальный запас: {minStock}");
+        Console.WriteLine($"Максимальный запас: {maxStock}");
+        Console.WriteLine($"Число пустых складов: {emptyCount}");
+        Console.WriteLine(new string('-', 35));
+
+        // Поиск склада по количеству ресурса
+        Console.WriteLine("Введите количество ресурсов для поиска (или 'exit' для выхода):");
+
+        while (true)
+        {
+            Console.Write("\nВаш запрос: ");
+            string? input = Console.ReadLine();
+
+            if (input == null) continue;
+            if (input.ToLower() == "exit")
+            {
+                Console.WriteLine("Программа завершена.");
+                break;
+            }
+            
+            if (int.TryParse(input, out int searchTarget))
+            {
+                int foundIndex = -1;
+                
+                for (int i = 0; i < warehouses.Length; i++)
+                {
+                    if (warehouses[i] == searchTarget)
+                    {
+                        foundIndex = i;
+                        break;
+                    }
+                }
+                
+                if (foundIndex != -1)
+                {
+                    Console.WriteLine($"[SUCCESS] Первый склад с таким количеством — это Склад #{foundIndex}");
+                }
+                else
+                {
+                    Console.WriteLine("[ERROR] Склада с таким точным количеством ресурсов не найдено.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("[ERROR] Введите корректное число или 'exit' для выхода.");
+            }
+        }
     }
 }
