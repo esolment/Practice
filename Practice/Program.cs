@@ -14,5 +14,10 @@ Practice.LoopsAndArrays.Run(interactive: false);
 Console.WriteLine("\n4. ООП");
 Practice.Oop.Run();
 
+// 5. Конструкторы
+Console.WriteLine("\n5. Конструкторы");
+Practice.Constructors.Run(debug: false);
+Practice.AssemblyLine.Run(interactive: true);
+
 // (C) Walter Kerrigan. All right reserved.
 // Ни один ИИ не писал этот код.
