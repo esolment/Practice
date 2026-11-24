@@ -171,8 +171,7 @@ public static class Constructors
         Console.WriteLine($"p1: {p1}");
         Console.WriteLine($"p2: {p2}");
         Console.WriteLine($"p3: {p3}");
-
-        // 20
         
+        // 20: см. AssemblyLine.cs
     }
 }
