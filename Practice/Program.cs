@@ -17,7 +17,12 @@ Practice.Oop.Run();
 // 5. Конструкторы
 Console.WriteLine("\n5. Конструкторы");
 Practice.Constructors.Run(debug: false);
-Practice.AssemblyLine.Run(interactive: true);
+Practice.AssemblyLine.Run(interactive: false);
+
+// 6. Наследования
+Console.WriteLine("\n6. Наследования");
+Practice.Inheritance.Run();
+Practice.InheritLab.Run();
 
 // (C) Walter Kerrigan. All right reserved.
 // Ни один ИИ не писал этот код.
